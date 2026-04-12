@@ -95,16 +95,41 @@
     return function start() {
       el.style.visibility = 'visible';
       var index = 0;
-      var interval = setInterval(function () {
-        index++;
-        el.textContent = fullText.slice(0, index) + '|';
+
+      function typeNext() {
         if (index >= fullText.length) {
-          clearInterval(interval);
+          // Done — remove cursor after a pause
           setTimeout(function () {
             el.textContent = fullText;
           }, 600);
+          return;
         }
-      }, 35);
+
+        index++;
+        el.textContent = fullText.slice(0, index) + '|';
+
+        var ch = fullText[index - 1];
+        var delay;
+
+        if (ch === '|' || ch === ',' || ch === ';') {
+          delay = 60 + Math.random() * 40;
+        } else if (ch === ' ') {
+          delay = 20 + Math.random() * 20;
+        } else {
+          var burst = Math.random();
+          if (burst < 0.08) {
+            delay = 45 + Math.random() * 30;
+          } else if (burst < 0.25) {
+            delay = 22 + Math.random() * 15;
+          } else {
+            delay = 8 + Math.random() * 12;
+          }
+        }
+
+        setTimeout(typeNext, delay);
+      }
+
+      typeNext();
     };
   }
 
