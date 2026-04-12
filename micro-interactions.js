@@ -412,13 +412,13 @@
     var about = document.querySelector('#about');
     if (about && !reducedMotion) {
       var blobs = [
-        { size: 180, top: 10,  left: 5,  tx: 18,  ty: 12,  scale: 1.1,  dur: 8  },
-        { size: 140, top: 60,  left: 75, tx: -14, ty: 20,  scale: 1.05, dur: 11 },
-        { size: 200, top: 30,  left: 40, tx: 10,  ty: -18, scale: 0.95, dur: 9  },
-        { size: 120, top: 80,  left: 20, tx: 22,  ty: -10, scale: 1.12, dur: 13 },
-        { size: 160, top: 5,   left: 60, tx: -20, ty: 15,  scale: 1.08, dur: 10 },
-        { size: 130, top: 70,  left: 55, tx: 12,  ty: 18,  scale: 0.92, dur: 12 },
-        { size: 150, top: 45,  left: 85, tx: -16, ty: -12, scale: 1.06, dur: 7  },
+        { size: 320, top: 10,  left: 5,  tx: 35,  ty: 25,  scale: 1.15, dur: 14 },
+        { size: 260, top: 55,  left: 70, tx: -28, ty: 35,  scale: 1.1,  dur: 18 },
+        { size: 380, top: 25,  left: 38, tx: 20,  ty: -30, scale: 0.92, dur: 16 },
+        { size: 220, top: 75,  left: 15, tx: 40,  ty: -20, scale: 1.18, dur: 20 },
+        { size: 300, top: 5,   left: 62, tx: -35, ty: 28,  scale: 1.12, dur: 17 },
+        { size: 240, top: 65,  left: 50, tx: 25,  ty: 32,  scale: 0.88, dur: 22 },
+        { size: 280, top: 40,  left: 82, tx: -30, ty: -25, scale: 1.08, dur: 15 },
       ];
       blobs.forEach(function (b, i) {
         var el = document.createElement('div');
