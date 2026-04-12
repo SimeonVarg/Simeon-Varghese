@@ -41,9 +41,8 @@
       return;
     }
 
-    // Force the name onto its own line permanently — this prevents any
-    // reflow during scramble regardless of random char widths
-    injectStyle('h1 .accent{display:block}');
+    // Force the name onto its own line permanently — set via inline <style> in <head>
+    // so it applies before first paint with no reflow risk
 
     var finalText = accentSpan.textContent;
     var totalChars = finalText.length;
