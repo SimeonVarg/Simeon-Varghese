@@ -418,7 +418,7 @@
         { size: 220, top: 75,  left: 15, tx: 40,  ty: -20, scale: 1.18, dur: 20 },
         { size: 300, top: 5,   left: 62, tx: -35, ty: 28,  scale: 1.12, dur: 17 },
         { size: 240, top: 65,  left: 50, tx: 25,  ty: 32,  scale: 0.88, dur: 22 },
-        { size: 280, top: 40,  left: 82, tx: -30, ty: -25, scale: 1.08, dur: 15 },
+        { size: 200, top: 40,  left: 72, tx: -30, ty: -25, scale: 1.08, dur: 15 },
       ];
       blobs.forEach(function (b, i) {
         var el = document.createElement('div');
