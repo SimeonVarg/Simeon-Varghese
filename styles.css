@@ -115,9 +115,6 @@ h1 {
 }
 
 /* ── About Section ─────────────────────────────────────────────────────── */
-#about {
-  padding: 80px 1.5rem;
-}
 
 .about-container {
   max-width: 800px;
@@ -141,41 +138,34 @@ h1 {
   margin-bottom: 1.25rem;
 }
 
-/* Animated ambient blob behind the about text */
-.about-container {
+/* Animated ambient blobs behind the about text */
+#about {
+  padding: 80px 1.5rem;
   position: relative;
+  overflow: hidden; /* hard-clips all blobs to this section */
 }
 
-.about-container::before {
-  content: '';
-  position: absolute;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(191,87,0,0.13) 0%, transparent 70%);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: about-blob 8s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.about-container h2,
-.about-bio {
+.about-container {
   position: relative;
   z-index: 1;
 }
 
-@keyframes about-blob {
-  0%   { transform: translate(-60%, -40%) scale(1);   opacity: 0.7; }
-  33%  { transform: translate(-40%, -60%) scale(1.15); opacity: 1;   }
-  66%  { transform: translate(-55%, -55%) scale(0.95); opacity: 0.8; }
-  100% { transform: translate(-45%, -45%) scale(1.1);  opacity: 0.9; }
+.about-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(191,87,0,0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: about-blob-drift var(--blob-duration, 9s) ease-in-out infinite alternate;
+}
+
+@keyframes about-blob-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(var(--blob-tx, 20px), var(--blob-ty, 15px)) scale(var(--blob-scale, 1.1)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-container::before { animation: none; }
+  .about-blob { animation: none; }
 }
 
 /* Word-by-word reveal on scroll */
