@@ -120,7 +120,7 @@ h1 {
 }
 
 .about-container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -134,71 +134,51 @@ h1 {
   display: inline-block;
 }
 
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-}
-
-@media (min-width: 768px) {
-  .about-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-}
-
 .about-bio p {
   font-size: 1.0625rem;
   color: var(--text-muted);
   line-height: 1.8;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.about-bio p:last-child {
-  margin-bottom: 0;
-}
-
-.about-skills {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.skill-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.skill-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.skill-chips {
+.about-highlights {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.75rem;
+  margin: 1.75rem 0;
 }
 
-.skill-chip {
-  font-size: 0.8125rem;
+.about-highlight {
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text);
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 1rem;
   transition: border-color 200ms ease, color 200ms ease;
 }
 
-.skill-chip:hover {
+.about-highlight:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.about-cta {
+  font-size: 1rem !important;
+  color: var(--text-muted);
+}
+
+.about-cta a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color 200ms ease;
+}
+
+.about-cta a:hover {
+  border-bottom-color: var(--accent);
 }
 
 /* ── Projects Section ──────────────────────────────────────────────────── */
