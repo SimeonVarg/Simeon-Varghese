@@ -141,6 +141,55 @@ h1 {
   margin-bottom: 1.25rem;
 }
 
+.about-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.75rem;
+  padding: 2rem 2rem 1.5rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+}
+
+@media (min-width: 600px) {
+  .about-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem 0.5rem 0;
+}
+
+.about-stat + .about-stat {
+  border-left: 1px solid var(--border);
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+.about-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.about-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* ── Projects Section ──────────────────────────────────────────────────── */
 #projects {
   padding: 80px 1.5rem;
