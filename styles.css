@@ -141,53 +141,54 @@ h1 {
   margin-bottom: 1.25rem;
 }
 
-.about-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 0.75rem;
-  padding: 2rem 2rem 1.5rem;
+/* Animated ambient blob behind the about text */
+.about-container {
+  position: relative;
 }
 
-.about-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--border);
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
+.about-container::before {
+  content: '';
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(191,87,0,0.13) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: about-blob 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
 }
 
-@media (min-width: 600px) {
-  .about-stats {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.about-container h2,
+.about-bio {
+  position: relative;
+  z-index: 1;
 }
 
-.about-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.5rem 1rem 0.5rem 0;
+@keyframes about-blob {
+  0%   { transform: translate(-60%, -40%) scale(1);   opacity: 0.7; }
+  33%  { transform: translate(-40%, -60%) scale(1.15); opacity: 1;   }
+  66%  { transform: translate(-55%, -55%) scale(0.95); opacity: 0.8; }
+  100% { transform: translate(-45%, -45%) scale(1.1);  opacity: 0.9; }
 }
 
-.about-stat + .about-stat {
-  border-left: 1px solid var(--border);
-  padding-left: 1rem;
-  padding-right: 0;
+@media (prefers-reduced-motion: reduce) {
+  .about-container::before { animation: none; }
 }
 
-.about-stat-value {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--accent);
+/* Word-by-word reveal on scroll */
+.about-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 400ms ease, transform 400ms ease;
 }
 
-.about-stat-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.about-word.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Projects Section ──────────────────────────────────────────────────── */

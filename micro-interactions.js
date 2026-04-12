@@ -407,6 +407,41 @@
     });
   }
 
+  function initAboutWordReveal(reducedMotion) {
+    var paras = document.querySelectorAll('.about-bio p');
+    if (!paras.length) return;
+
+    if (reducedMotion) {
+      paras.forEach(function (p) { p.style.opacity = '1'; });
+      return;
+    }
+
+    // Split each paragraph into word spans
+    paras.forEach(function (p) {
+      var words = p.textContent.split(' ');
+      p.innerHTML = words.map(function (w) {
+        return '<span class="about-word">' + w + '</span>';
+      }).join(' ');
+    });
+
+    var allWords = document.querySelectorAll('.about-word');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var words = entry.target.querySelectorAll('.about-word');
+          words.forEach(function (word, i) {
+            setTimeout(function () {
+              word.classList.add('visible');
+            }, i * 30);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    paras.forEach(function (p) { observer.observe(p); });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initScrollBar();
     var startTypewriter = initTypewriter(reducedMotion);
@@ -417,5 +452,6 @@
     initTagShimmer(reducedMotion);
     initMagneticButtons(reducedMotion);
     initCustomCursor(reducedMotion);
+    initAboutWordReveal(reducedMotion);
   });
 })();
