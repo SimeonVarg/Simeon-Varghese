@@ -188,6 +188,47 @@ h1 {
   width: 100%;
   aspect-ratio: 16 / 9;
   background-color: var(--border);
+  transition: transform 600ms ease;
+}
+
+/* Clickable image wrapper */
+.card-image-link {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.card-image-link:hover .card-image {
+  transform: scale(1.06);
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+
+.card-image-link:hover .card-image-overlay {
+  opacity: 1;
+}
+
+.card-image-cta {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.03em;
+  transform: translateY(6px);
+  transition: transform 350ms ease;
+}
+
+.card-image-link:hover .card-image-cta {
+  transform: translateY(0);
 }
 
 .card-body {
