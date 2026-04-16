@@ -599,23 +599,17 @@ footer#contact {
   padding: 1rem 0 1.5rem;
 }
 
-/* Track: relative container, cards are stacked and translated */
 .projects-grid {
   position: relative;
-  display: flex;
-  align-items: stretch;
-  /* height driven by tallest card */
-  min-height: 420px;
+  min-height: 480px;
 }
 
 .projects-grid .project-card {
   position: absolute;
-  left: 50%;
   top: 0;
-  width: min(520px, 62%);
-  transform-origin: center center;
-  margin-left: calc(-1 * min(260px, 31%));
-  will-change: transform, opacity;
+  left: 0;
+  width: calc((100% - 3rem) / 3);
+  will-change: transform;
 }
 
 .carousel-btn {
