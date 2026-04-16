@@ -97,4 +97,14 @@
   setCardWidths();
   slide(0, false);
   updateDots();
+
+  // Cards beyond the initial 3 are off-screen, so micro-interactions.js
+  // entrance animation fires late when they first appear. Pre-resolve them now.
+  setTimeout(function () {
+    cards.slice(3).forEach(function (card) {
+      card.style.transition = 'none';
+      card.style.opacity    = '1';
+      card.style.transform  = 'scale(0.97) translateY(0)';
+    });
+  }, 0);
 })();
