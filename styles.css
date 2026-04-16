@@ -600,16 +600,13 @@ footer#contact {
 }
 
 .projects-grid {
-  display: flex;
-  gap: 1rem;
-  /* no track-level transition — cards animate individually */
+  position: relative;
+  /* height set by JS */
 }
 
-/* 3 cards fill the width; peek card is partially clipped by overflow:hidden */
 .projects-grid .project-card {
-  flex: 0 0 calc((100% - 2rem) / 3);
-  min-width: 0;
-  transition: opacity 350ms ease, transform 350ms ease;
+  width: calc((100% - 2rem) / 3);
+  /* position + transition set by JS */
 }
 
 .carousel-btn {

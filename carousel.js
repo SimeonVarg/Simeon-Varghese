@@ -8,10 +8,9 @@
 
   const cards = Array.from(track.querySelectorAll('.project-card'));
   const N = cards.length;
-  let cur = 0; // index of leftmost visible card
+  let cur = 0;
   let busy = false;
 
-  // dots
   cards.forEach((_, i) => {
     const d = document.createElement('button');
     d.className = 'carousel-dot';
@@ -23,41 +22,42 @@
 
   function mod(n, m) { return ((n % m) + m) % m; }
 
-  function slotOf(i) { return mod(i - cur, N); } // 0=left,1=mid,2=right,3=peek-right
+  function cardStep() {
+    // width of one card + gap
+    const g = parseInt(getComputedStyle(track).gap) || 16;
+    return cards[0].offsetWidth + g;
+  }
 
-  function applyStyles(instant) {
+  function render(instant) {
+    const step = cardStep();
+
     cards.forEach((card, i) => {
-      const slot = slotOf(i);
-      card.style.transition = instant ? 'none' : 'opacity 350ms ease, transform 350ms ease';
-      if (slot === 0 || slot === 1 || slot === 2) {
-        card.style.opacity = '1';
-        card.style.transform = 'scale(1)';
-        card.style.order = slot;
-        card.style.pointerEvents = '';
-      } else if (slot === 3) {
-        // right peek
-        card.style.opacity = '0.45';
-        card.style.transform = 'scale(0.9)';
-        card.style.order = slot;
-        card.style.pointerEvents = 'none';
-      } else if (slot === N - 1) {
-        // left peek (only visible when cur > 0 conceptually, but always positioned)
-        card.style.opacity = '0.45';
-        card.style.transform = 'scale(0.9)';
-        card.style.order = -1;
-        card.style.pointerEvents = 'none';
-      } else {
-        card.style.opacity = '0';
-        card.style.transform = 'scale(0.85)';
-        card.style.order = slot;
-        card.style.pointerEvents = 'none';
-      }
+      const slot = mod(i - cur, N);
+      // slot 0,1,2 = visible; slot 3 = right peek; slot N-1 = left peek; rest hidden
+      let tx, opacity, scale;
+
+      if (slot === 0)        { tx = 0;       opacity = 1;    scale = 1; }
+      else if (slot === 1)   { tx = step;    opacity = 1;    scale = 1; }
+      else if (slot === 2)   { tx = step*2;  opacity = 1;    scale = 1; }
+      else if (slot === 3)   { tx = step*3;  opacity = 0.45; scale = 0.92; }
+      else if (slot === N-1) { tx = -step;   opacity = 0.45; scale = 0.92; }
+      else                   { tx = slot < N/2 ? step*4 : -step*2; opacity = 0; scale = 0.9; }
+
+      card.style.position   = 'absolute';
+      card.style.top        = '0';
+      card.style.left       = '0';
+      card.style.transition = instant ? 'none' : 'transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease';
+      card.style.transform  = `translateX(${tx}px) scale(${scale})`;
+      card.style.opacity    = opacity;
+      card.style.pointerEvents = slot <= 2 ? '' : 'none';
     });
+
+    // keep track height = card height
+    track.style.height = cards[0].offsetHeight + 'px';
 
     dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
       d.classList.toggle('carousel-dot--active', i === cur);
     });
-
     btnPrev.disabled = false;
     btnNext.disabled = false;
   }
@@ -66,8 +66,8 @@
     if (busy) return;
     busy = true;
     cur = mod(i, N);
-    applyStyles(false);
-    setTimeout(() => { busy = false; }, 360);
+    render(false);
+    setTimeout(() => { busy = false; }, 430);
   }
 
   btnPrev.addEventListener('click', () => go(cur - 1));
@@ -80,5 +80,6 @@
     if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
-  applyStyles(true);
+  window.addEventListener('resize', () => render(true));
+  render(true);
 })();
