@@ -612,10 +612,9 @@ footer#contact {
   position: absolute;
   left: 50%;
   top: 0;
-  width: min(420px, 90%);
+  width: min(520px, 62%);
   transform-origin: center center;
-  /* translateX offset is applied as % of card width via JS */
-  margin-left: calc(-1 * min(210px, 45%));
+  margin-left: calc(-1 * min(260px, 31%));
   will-change: transform, opacity;
 }
 
