@@ -600,16 +600,14 @@ footer#contact {
 }
 
 .projects-grid {
-  position: relative;
-  min-height: 480px;
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
 }
 
 .projects-grid .project-card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc((100% - 3rem) / 3);
-  will-change: transform;
+  flex: 0 0 calc((100% - 3rem) / 3);
+  min-width: 0;
 }
 
 .carousel-btn {
