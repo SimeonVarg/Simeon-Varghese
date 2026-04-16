@@ -600,13 +600,17 @@ footer#contact {
 }
 
 .projects-grid {
-  position: relative;
-  /* height set by JS */
+  display: flex;
+  gap: 1rem;
+  will-change: transform;
 }
 
+/* Card width = 1/3 of the outer container.
+   outer has flex:1 inside carousel-wrapper which has known width.
+   We use vw-based fallback; JS overrides if needed. */
 .projects-grid .project-card {
-  width: calc((100% - 2rem) / 3);
-  /* position + transition set by JS */
+  flex: 0 0 30%;  /* JS will override with exact px */
+  min-width: 0;
 }
 
 .carousel-btn {
