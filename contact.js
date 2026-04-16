@@ -106,20 +106,26 @@
   /* ── 2. Magnetic Buttons ────────────────────────────────────────── */
   if (!reduced) {
     document.querySelectorAll('.mag-btn').forEach(btn => {
+      let raf = null;
       btn.addEventListener('mousemove', e => {
-        const r  = btn.getBoundingClientRect();
-        const cx = r.left + r.width  / 2;
-        const cy = r.top  + r.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const zone = Math.max(r.width, r.height) * 1.4;
-        if (dist < zone) {
-          const pull = (1 - dist / zone) * 14;
-          btn.style.transform = `translate(${dx / dist * pull}px, ${dy / dist * pull}px)`;
-        }
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = null;
+          const r  = btn.getBoundingClientRect();
+          const cx = r.left + r.width  / 2;
+          const cy = r.top  + r.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const zone = Math.max(r.width, r.height) * 1.4;
+          if (dist < zone) {
+            const pull = (1 - dist / zone) * 14;
+            btn.style.transform = `translate(${dx / dist * pull}px, ${dy / dist * pull}px)`;
+          }
+        });
       });
       btn.addEventListener('mouseleave', () => {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
         btn.style.transform = '';
       });
     });
