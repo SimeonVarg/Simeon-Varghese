@@ -1,6 +1,7 @@
-/* carousel.js — flex track, infinite rotation */
+/* carousel.js */
 (function () {
-  const track   = document.getElementById('carousel-track');
+  const outer  = document.querySelector('.carousel-track-outer');
+  const track  = document.getElementById('carousel-track');
   const btnPrev = document.getElementById('carousel-prev');
   const btnNext = document.getElementById('carousel-next');
   const dotsEl  = document.getElementById('carousel-dots');
@@ -8,10 +9,8 @@
 
   const cards = Array.from(track.querySelectorAll('.project-card'));
   const total = cards.length;
-  let current = 0;
-  let animating = false;
+  let current = 0; // leftmost visible card index
 
-  // Build dots
   cards.forEach((_, i) => {
     const dot = document.createElement('button');
     dot.className = 'carousel-dot';
@@ -21,92 +20,74 @@
     dotsEl.appendChild(dot);
   });
 
-  function mod(n, m) { return ((n % m) + m) % m; }
-
-  // Re-order cards in the DOM so current is always first,
-  // then translate the track so the visible window shows slots 0-2.
-  function render(instant) {
-    // Re-order: put cards in order starting from current
-    for (let i = 0; i < total; i++) {
-      track.appendChild(cards[mod(current + i, total)]);
-    }
-
-    // Snap to position 0 instantly (cards are already in right order)
-    track.style.transition = 'none';
-    track.style.transform  = 'translateX(0)';
-
-    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
-      d.classList.toggle('carousel-dot--active', i === current);
-      d.setAttribute('aria-selected', i === current ? 'true' : 'false');
-    });
-
-    btnPrev.disabled = false;
-    btnNext.disabled = false;
+  function cardWidth() {
+    return cards[0].offsetWidth;
   }
 
-  function goTo(idx, direction) {
-    if (animating) return;
-    animating = true;
+  function gap() {
+    // read computed gap from the flex container
+    return parseInt(getComputedStyle(track).gap) || 16;
+  }
 
-    const next = mod(idx, total);
-    const dir  = direction ?? (mod(idx - current, total) <= total / 2 ? 1 : -1);
+  function render() {
+    const cw = cardWidth();
+    const g  = gap();
+    const step = cw + g;
 
-    // Re-order so current is first
-    for (let i = 0; i < total; i++) {
-      track.appendChild(cards[mod(current + i, total)]);
-    }
+    // Peek amount: show 15% of the adjacent card
+    const peek = cw * 0.18;
 
-    // Place next card off-screen in the direction of travel
-    const cardW = track.parentElement.offsetWidth / 3;
-    const gap   = 24;
-    const step  = cardW + gap;
+    // When current > 0, shift left by (current * step - peek) so prev card peeks
+    // When current === 0, no left peek, just show from start
+    let offset = current * step;
+    if (current > 0) offset -= peek;
 
-    if (dir > 0) {
-      // Slide left: next card is already at slot 3 (off right), animate track left by one step
-      track.style.transition = 'none';
-      track.style.transform  = 'translateX(0)';
-      // force reflow
-      track.offsetHeight;
-      track.style.transition = 'transform 420ms cubic-bezier(0.4,0,0.2,1)';
-      track.style.transform  = `translateX(-${step}px)`;
-    } else {
-      // Slide right: move last card to front, start offset left, animate to 0
-      const lastCard = cards[mod(current - 1, total)];
-      track.insertBefore(lastCard, track.firstChild);
-      track.style.transition = 'none';
-      track.style.transform  = `translateX(-${step}px)`;
-      track.offsetHeight;
-      track.style.transition = 'transform 420ms cubic-bezier(0.4,0,0.2,1)';
-      track.style.transform  = 'translateX(0)';
-    }
+    track.style.transform = `translateX(-${offset}px)`;
 
-    current = next;
-
-    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
-      d.classList.toggle('carousel-dot--active', i === current);
-      d.setAttribute('aria-selected', i === current ? 'true' : 'false');
-    });
-
-    setTimeout(() => {
-      // Re-order cleanly after animation
-      for (let i = 0; i < total; i++) {
-        track.appendChild(cards[mod(current + i, total)]);
+    // Style cards: active 3 full, peek cards slightly scaled/faded
+    cards.forEach((card, i) => {
+      const dist = i - current;
+      if (dist === -1) {
+        // left peek
+        card.style.opacity   = '0.5';
+        card.style.transform = 'scale(0.92)';
+      } else if (dist >= 0 && dist <= 2) {
+        // visible
+        card.style.opacity   = '1';
+        card.style.transform = 'scale(1)';
+      } else if (dist === 3) {
+        // right peek
+        card.style.opacity   = '0.5';
+        card.style.transform = 'scale(0.92)';
+      } else {
+        card.style.opacity   = '0';
+        card.style.transform = 'scale(0.9)';
       }
-      track.style.transition = 'none';
-      track.style.transform  = 'translateX(0)';
-      animating = false;
-    }, 430);
+    });
+
+    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
+      d.classList.toggle('carousel-dot--active', i === current);
+    });
+
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current + 3 >= total;
   }
 
-  btnPrev.addEventListener('click', () => goTo(current - 1, -1));
-  btnNext.addEventListener('click', () => goTo(current + 1,  1));
+  function goTo(i) {
+    current = Math.max(0, Math.min(i, total - 3));
+    render();
+  }
 
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+
+  let tx0 = 0;
+  track.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx0;
+    if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
-  render(true);
+  window.addEventListener('resize', render);
+  render();
 })();
