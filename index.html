@@ -38,72 +38,112 @@
 
       <section id="projects">
         <h2>Featured Projects</h2>
-        <div class="projects-grid">
+        <div class="carousel-wrapper" aria-label="Project cards carousel">
+          <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous project" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
 
-          <article class="project-card">
-            <a href="https://music-vid-pro.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open MusicVid Pro">
-              <div class="card-image" role="img" aria-label="MusicVid Pro screenshot" style="background-image:url('images/musicvidpro.png');background-size:cover;background-position:center;"></div>
-              <div class="card-image-overlay">
-                <span class="card-image-cta">Open Project ↗</span>
-              </div>
-            </a>
-            <div class="card-body">
-              <h3>MusicVid Pro</h3>
-              <p>A fully browser-based music video editor with BPM detection, beat-snapping, and multi-camera auto-sync. Offers professional audio tools — pitch transposition, tempo stretching, waveform editing — powered by FFmpeg WASM and Rubberband, all free and fully local.</p>
-              <div class="tags">
-                <span class="tag">React</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">FFmpeg WASM</span>
-                <span class="tag">Web Audio API</span>
-                <span class="tag">Tailwind CSS</span>
-                <span class="tag">Web Workers</span>
-              </div>
+          <div class="carousel-track-outer">
+            <div class="projects-grid" id="carousel-track">
+
+              <article class="project-card">
+                <a href="https://music-vid-pro.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open MusicVid Pro">
+                  <div class="card-image" role="img" aria-label="MusicVid Pro screenshot" style="background-image:url('images/musicvidpro.png');background-size:cover;background-position:center;"></div>
+                  <div class="card-image-overlay">
+                    <span class="card-image-cta">Open Project ↗</span>
+                  </div>
+                </a>
+                <div class="card-body">
+                  <h3>MusicVid Pro</h3>
+                  <p>A fully browser-based music video editor with BPM detection, beat-snapping, and multi-camera auto-sync. Offers professional audio tools — pitch transposition, tempo stretching, waveform editing — powered by FFmpeg WASM and Rubberband, all free and fully local.</p>
+                  <div class="tags">
+                    <span class="tag">React</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">FFmpeg WASM</span>
+                    <span class="tag">Web Audio API</span>
+                    <span class="tag">Tailwind CSS</span>
+                    <span class="tag">Web Workers</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-card">
+                <a href="https://light-ansible.onrender.com" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Light Ansible">
+                  <div class="card-image" role="img" aria-label="Light Ansible screenshot" style="background-image:url('images/lightansible.png');background-size:cover;background-position:center;"></div>
+                  <div class="card-image-overlay">
+                    <span class="card-image-cta">Open Project ↗</span>
+                  </div>
+                </a>
+                <div class="card-body">
+                  <h3>Light Ansible</h3>
+                  <p>A Python-based idempotent server provisioner with a Flask web dashboard. Enforces declared system state (packages, users, permissions, services, cron) via a config.yaml, streams real-time output over SSE, and generates structured JSON compliance reports. Includes --dry-run mode and a full pytest suite. <em style="color:var(--text-muted);font-size:0.85em;">Note: hosted on Render free tier — may take ~1 min to wake up.</em></p>
+                  <div class="tags">
+                    <span class="tag">Idempotent Automation</span>
+                    <span class="tag">SSE Streaming</span>
+                    <span class="tag">Python Subprocess</span>
+                    <span class="tag">Linux Sysadmin</span>
+                    <span class="tag">Flask REST API</span>
+                    <span class="tag">pytest + Mocking</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-card">
+                <a href="https://coda-mu.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Coda">
+                  <div class="card-image" role="img" aria-label="Coda screenshot" style="background-image:url('images/coda.png');background-size:cover;background-position:center;"></div>
+                  <div class="card-image-overlay">
+                    <span class="card-image-cta">Open Project ↗</span>
+                  </div>
+                </a>
+                <div class="card-body">
+                  <h3>Coda</h3>
+                  <p>A full-stack B2B SaaS platform for music conservatories. Role-based access enforced via Next.js middleware and Supabase RLS, with a Tiptap rich-text lesson editor, PostgreSQL full-text search, and a visual student Progress Tree with optimistic UI updates.</p>
+                  <div class="tags">
+                    <span class="tag">Next.js App Router</span>
+                    <span class="tag">Supabase RLS</span>
+                    <span class="tag">PostgreSQL FTS</span>
+                    <span class="tag">Tiptap</span>
+                    <span class="tag">Optimistic UI</span>
+                    <span class="tag">JWT Middleware</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-card">
+                <a href="https://music-tools-smoky.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Music Tools">
+                  <div class="card-image card-image--placeholder" role="img" aria-label="Music Tools preview">
+                    <div class="card-image-placeholder-inner">
+                      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="30" stroke="rgba(191,87,0,0.4)" stroke-width="1.5"/><circle cx="32" cy="32" r="20" stroke="rgba(191,87,0,0.3)" stroke-width="1"/><circle cx="32" cy="32" r="10" stroke="rgba(191,87,0,0.5)" stroke-width="1.5"/><line x1="32" y1="2" x2="32" y2="62" stroke="rgba(191,87,0,0.2)" stroke-width="1"/><line x1="2" y1="32" x2="62" y2="32" stroke="rgba(191,87,0,0.2)" stroke-width="1"/><line x1="10" y1="10" x2="54" y2="54" stroke="rgba(191,87,0,0.15)" stroke-width="1"/><line x1="54" y1="10" x2="10" y2="54" stroke="rgba(191,87,0,0.15)" stroke-width="1"/></svg>
+                      <span>15 Interactive Music Tools</span>
+                    </div>
+                  </div>
+                  <div class="card-image-overlay">
+                    <span class="card-image-cta">Open Project ↗</span>
+                  </div>
+                </a>
+                <div class="card-body">
+                  <h3>Music Tools</h3>
+                  <p>A suite of 15 browser-based music tools — Circle of Fifths, Chord Builder, Oscilloscope, Drum Machine, Spectrum Analyzer, Galaxy Map, Ear Training, Piano Roll, Tuner, Ambient Engine, and more. Fully client-side with real-time 3D visualizations and audio synthesis.</p>
+                  <div class="tags">
+                    <span class="tag">Tone.js</span>
+                    <span class="tag">Three.js</span>
+                    <span class="tag">React Three Fiber</span>
+                    <span class="tag">D3.js</span>
+                    <span class="tag">Framer Motion</span>
+                    <span class="tag">Zustand</span>
+                  </div>
+                </div>
+              </article>
+
             </div>
-          </article>
+          </div>
 
-          <article class="project-card">
-            <a href="https://light-ansible.onrender.com" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Light Ansible">
-              <div class="card-image" role="img" aria-label="Light Ansible screenshot" style="background-image:url('images/lightansible.png');background-size:cover;background-position:center;"></div>
-              <div class="card-image-overlay">
-                <span class="card-image-cta">Open Project ↗</span>
-              </div>
-            </a>
-            <div class="card-body">
-              <h3>Light Ansible</h3>
-              <p>A Python-based idempotent server provisioner with a Flask web dashboard. Enforces declared system state (packages, users, permissions, services, cron) via a config.yaml, streams real-time output over SSE, and generates structured JSON compliance reports. Includes --dry-run mode and a full pytest suite. <em style="color:var(--text-muted);font-size:0.85em;">Note: hosted on Render free tier — may take ~1 min to wake up.</em></p>
-              <div class="tags">
-                <span class="tag">Idempotent Automation</span>
-                <span class="tag">SSE Streaming</span>
-                <span class="tag">Python Subprocess</span>
-                <span class="tag">Linux Sysadmin</span>
-                <span class="tag">Flask REST API</span>
-                <span class="tag">pytest + Mocking</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-card">
-            <a href="https://coda-mu.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Coda">
-              <div class="card-image" role="img" aria-label="Coda screenshot" style="background-image:url('images/coda.png');background-size:cover;background-position:center;"></div>
-              <div class="card-image-overlay">
-                <span class="card-image-cta">Open Project ↗</span>
-              </div>
-            </a>
-            <div class="card-body">
-              <h3>Coda</h3>
-              <p>A full-stack B2B SaaS platform for music conservatories. Role-based access enforced via Next.js middleware and Supabase RLS, with a Tiptap rich-text lesson editor, PostgreSQL full-text search, and a visual student Progress Tree with optimistic UI updates.</p>
-              <div class="tags">
-                <span class="tag">Next.js App Router</span>
-                <span class="tag">Supabase RLS</span>
-                <span class="tag">PostgreSQL FTS</span>
-                <span class="tag">Tiptap</span>
-                <span class="tag">Optimistic UI</span>
-                <span class="tag">JWT Middleware</span>
-              </div>
-            </div>
-          </article>
-
+          <button class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next project">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
+
+        <div class="carousel-dots" id="carousel-dots" aria-label="Carousel position" role="tablist"></div>
       </section>
     </main>
 
@@ -171,5 +211,6 @@
     <script src="hero-animation.js"></script>
     <script src="micro-interactions.js"></script>
     <script src="contact.js"></script>
+    <script src="carousel.js"></script>
   </body>
 </html>
