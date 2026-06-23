@@ -18,6 +18,25 @@
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- Flying name: animates from hero center to the nav corner on scroll.
+         aria-hidden because the real h1 and nav-brand carry the semantics. -->
+    <a href="#hero" id="flying-name" aria-hidden="true" tabindex="-1">Simeon Varghese<span class="dot">.</span></a>
+
+    <nav id="site-nav" aria-label="Primary">
+      <div class="nav-inner">
+        <a href="#hero" class="nav-brand">Simeon Varghese</a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
     <header id="hero">
       <div class="hero-content">
         <h1>Hi, I'm <span class="accent">Simeon Varghese.</span></h1>
@@ -224,6 +243,7 @@
     </footer>
 
     <script src="main.js"></script>
+    <script src="nav.js"></script>
     <script src="hero-animation.js"></script>
     <script src="micro-interactions.js"></script>
     <script src="contact.js"></script>
