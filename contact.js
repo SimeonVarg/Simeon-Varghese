@@ -106,26 +106,14 @@
   /* ── 2. Magnetic Buttons ────────────────────────────────────────── */
   if (!reduced) {
     document.querySelectorAll('.mag-btn').forEach(btn => {
-      let raf = null;
       btn.addEventListener('mousemove', e => {
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          raf = null;
-          const r  = btn.getBoundingClientRect();
-          const cx = r.left + r.width  / 2;
-          const cy = r.top  + r.height / 2;
-          const dx = e.clientX - cx;
-          const dy = e.clientY - cy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const zone = Math.max(r.width, r.height) * 1.4;
-          if (dist < zone) {
-            const pull = (1 - dist / zone) * 14;
-            btn.style.transform = `translate(${dx / dist * pull}px, ${dy / dist * pull}px)`;
-          }
-        });
+        const r  = btn.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width  / 2);
+        const dy = e.clientY - (r.top  + r.height / 2);
+        const pull = 10;
+        btn.style.transform = `translate(${dx * 0.25}px, ${dy * 0.25}px) scale(1.04)`;
       });
       btn.addEventListener('mouseleave', () => {
-        if (raf) { cancelAnimationFrame(raf); raf = null; }
         btn.style.transform = '';
       });
     });
@@ -184,20 +172,7 @@
     });
   }
 
-  /* ── 5. Glitch heading on scroll-enter ─────────────────────────── */
-  const heading = document.querySelector('.contact-heading');
-  if (heading) {
-    const obs = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        heading.classList.add('glitch-play');
-        setTimeout(() => heading.classList.remove('glitch-play'), 700);
-        obs.disconnect();
-      }
-    }, { threshold: 0.5 });
-    obs.observe(heading);
-  }
-
-  /* ── 6. Footer year ─────────────────────────────────────────────── */
+  /* ── 5. Footer year ─────────────────────────────────────────────── */
   const yr = document.getElementById('footer-year');
   if (yr) yr.textContent = new Date().getFullYear();
 
