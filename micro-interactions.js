@@ -337,23 +337,37 @@
     document.body.appendChild(ring);
     document.body.appendChild(dot);
 
-    // Inject CSS
+    // Inject CSS. The universal `cursor:none!important` is the key line: the
+    // body rule alone loses to every `cursor:pointer` declaration on links,
+    // buttons, cards, etc., so the OS pointer reappears over clickable things.
+    // Forcing it on every element suppresses the native cursor everywhere, and
+    // the ring's hover state becomes the "this is clickable" highlight instead.
     injectStyle(
       'body.mi-custom-cursor{cursor:none}' +
+      'body.mi-custom-cursor *{cursor:none!important}' +
       '#mi-cursor-ring{' +
         'position:fixed;width:18px;height:18px;' +
         'border:1.5px solid var(--accent);background:transparent;' +
         'border-radius:50%;pointer-events:none;z-index:99999;' +
         'transform:translate(-50%,-50%);' +
-        'transition:width 150ms,height 150ms,opacity 150ms' +
+        'transition:width 180ms cubic-bezier(0.34,1.56,0.64,1),' +
+          'height 180ms cubic-bezier(0.34,1.56,0.64,1),' +
+          'background-color 180ms ease,border-color 180ms ease,opacity 150ms' +
       '}' +
       '#mi-cursor-dot{' +
         'position:fixed;width:5px;height:5px;' +
         'background:var(--accent);border-radius:50%;' +
         'pointer-events:none;z-index:99999;' +
-        'transform:translate(-50%,-50%)' +
+        'transform:translate(-50%,-50%);' +
+        'transition:width 180ms ease,height 180ms ease,opacity 180ms ease' +
       '}' +
-      '#mi-cursor-ring.mi-cursor-hover{width:30px;height:30px;opacity:0.6}'
+      // Clickable highlight: ring blooms into a soft filled accent disc and the
+      // lagging dot fades away, so hovering anything interactive reads clearly.
+      '#mi-cursor-ring.mi-cursor-hover{' +
+        'width:46px;height:46px;opacity:1;' +
+        'background-color:rgba(191,87,0,0.16);border-color:var(--accent)' +
+      '}' +
+      '#mi-cursor-dot.mi-cursor-hover{opacity:0}'
     );
 
     // Add class to body to hide default cursor
@@ -386,14 +400,24 @@
     }
     requestAnimationFrame(loop);
 
-    // Hover state on interactive elements
-    document.querySelectorAll('a, button').forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        ring.classList.add('mi-cursor-hover');
-      });
-      el.addEventListener('mouseleave', function () {
-        ring.classList.remove('mi-cursor-hover');
-      });
+    // Hover state on interactive elements — delegated so it covers everything
+    // clickable, including controls added later (carousel, form) and any nested
+    // children of a link/button.
+    var INTERACTIVE = 'a, button, input, textarea, select, label, summary,' +
+      '[role="button"], [role="link"], [tabindex]:not([tabindex="-1"])';
+    function setHover(on) {
+      ring.classList.toggle('mi-cursor-hover', on);
+      dot.classList.toggle('mi-cursor-hover', on);
+    }
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.closest && e.target.closest(INTERACTIVE)) setHover(true);
+    });
+    document.addEventListener('mouseout', function (e) {
+      if (!e.target.closest || !e.target.closest(INTERACTIVE)) return;
+      // Keep the highlight if we're moving onto another interactive element
+      // (or a child of the same one) — only drop it when leaving for good.
+      var to = e.relatedTarget;
+      if (!to || !(to.closest && to.closest(INTERACTIVE))) setHover(false);
     });
 
     // Hide/show when cursor leaves/enters the window

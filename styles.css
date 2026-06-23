@@ -32,6 +32,219 @@
   top: 0;
 }
 
+/* ── Site Nav ──────────────────────────────────────────────────────────── */
+#site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+
+/* Solid glassy bar once scrolled past the hero (toggled in nav.js) */
+#site-nav.scrolled {
+  background: rgba(13, 13, 13, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 200ms ease;
+  /* Invisible anchor: the #flying-name clone lands on top of this slot.
+     We keep it in the DOM for layout/semantics but never show it, so there's
+     no duplicate "Simeon Varghese" beside the flyer. */
+  visibility: hidden;
+}
+
+.nav-brand:hover { color: var(--accent); }
+.nav-brand:focus-visible,
+.nav-link:focus-visible,
+.nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-link {
+  position: relative;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  transition: color 200ms ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
+}
+
+.nav-link:hover { color: var(--text); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+.nav-link.active {
+  color: var(--text);
+}
+.nav-link.active::after { transform: scaleX(1); }
+
+/* Hamburger toggle — hidden on desktop */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 250ms ease, opacity 200ms ease;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 640px) {
+  .nav-toggle { display: flex; }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(13, 13, 13, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease;
+  }
+
+  .nav-links.open { max-height: 240px; }
+
+  .nav-links li { width: 100%; }
+
+  .nav-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    width: 100%;
+  }
+
+  .nav-link::after { display: none; }
+  .nav-link.active { color: var(--accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #site-nav,
+  .nav-link::after,
+  .nav-toggle span,
+  .nav-links { transition: none; }
+}
+
+/* ── Flying name (hero → nav shared-element morph) ─────────────────────── */
+/* Hidden until the morph is active. JS positions it (fixed) exactly over the
+   hero name at the moment of handoff, then toggles .at-hero off to drive it
+   to the nav corner (small + white + period collapsed). On the way back it
+   starts in the corner and animates onto the hero name. */
+#flying-name {
+  display: none;             /* inactive by default — real hero name shows */
+  position: fixed;
+  z-index: 1001;             /* above the nav bar */
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.1;          /* match h1 so the glyph baseline lines up at handoff */
+  white-space: nowrap;
+  text-decoration: none;
+  pointer-events: none;
+  /* Geometry set by JS as the flyer's BOX top-left, computed so the flyer's
+     text GLYPHS land exactly on the anchor's glyphs (see placeGlyphsAt). No
+     transform offset — JS owns the exact pixel position. */
+  top: var(--fly-top, 0px);
+  left: var(--fly-left, 0px);
+  transform-origin: left top;
+  /* Nav (resting end) state defaults */
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  /* Position AND font-size are driven frame-by-frame in JS (so glyphs stay
+     welded to the live hero name and there's no easing-lag drift). Only colour
+     and letter-spacing ease via CSS. */
+  transition: letter-spacing 550ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 550ms ease;
+}
+
+#flying-name.active { display: block; }
+
+/* Hero state */
+#flying-name.at-hero {
+  font-size: var(--fly-hero-size, 4rem);
+  letter-spacing: normal;
+  color: var(--accent);
+}
+
+/* Period: fades in for the hero state, out for the nav state. Plain inline text
+   (NOT inline-block) so it renders byte-identical to the real name's period at
+   handoff — an inline-block with overflow:hidden takes its baseline from the
+   bottom edge, which shifted the period vertically and made it jump. It's the
+   last glyph, so its width never needs to collapse: the trailing space is
+   invisible either way, and fading opacity alone reads as it appearing/leaving. */
+#flying-name .dot {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+#flying-name.at-hero .dot {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #flying-name { transition: color 200ms ease; }
+  #flying-name .dot { transition: none; }
+}
+
 /* ── Box-Sizing Reset ──────────────────────────────────────────────────── */
 *,
 *::before,
@@ -105,6 +318,13 @@ h1 {
 
 .accent {
   color: var(--accent);
+}
+
+/* The flying-name clone renders the hero name; hide the real one but keep it
+   in layout so JS can measure where the clone should sit. JS adds this class
+   only when the morph is active (so no-JS users still see the real name). */
+h1 .accent.fly-anchor {
+  visibility: hidden;
 }
 
 .hero-sub {
