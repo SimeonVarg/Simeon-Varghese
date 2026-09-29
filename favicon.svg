@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<!-- Tab icon: "S." — the same mark as the name in the nav (white letter,
+     burnt-orange dot). Colours are --bg and --accent in styles.css. The letter
+     uses the visitor's system bold sans (a tab icon cannot load Inter). -->
+
+<rect width="32" height="32" rx="7" fill="#0d0d0d"/>
+<text x="14" y="23.5" text-anchor="middle" font-family="Inter,Segoe UI,Helvetica Neue,Arial,sans-serif" font-weight="700" font-size="21" fill="#fff">S</text>
+<circle cx="23.6" cy="22" r="2.3" fill="#BF5700"/>
+</svg>
