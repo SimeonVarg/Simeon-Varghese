@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-<!-- Tab icon: "S." — the same mark as the name in the nav (white letter,
-     burnt-orange dot). Colours are --bg and --accent in styles.css. The letter
+<!-- Tab icon: "S." - the same mark as the name in the nav (white letter,
+     burnt-orange dot). Colours are the bg and accent tokens in styles.css. The letter
      uses the visitor's system bold sans (a tab icon cannot load Inter). -->
 
 <rect width="32" height="32" rx="7" fill="#0d0d0d"/>
