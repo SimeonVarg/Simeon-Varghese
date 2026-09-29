@@ -1067,10 +1067,27 @@ footer#contact {
   border: 0;
 }
 
-/* Kiro's post about the project, beside a short note in his words. */
+/* Kiro's post about the project, beside a short note in his words.
+   Sizing for the embedded LinkedIn post lives here, in one place. The post is a 4:5 video with
+   LinkedIn's header, a two-line caption (collapsed) and the like bar around it, so its height is
+   "chrome + width x ratio". On desktop the width is picked so the whole post fits one screen
+   under the fixed nav; the iframe height then follows the width. */
 .featured-origin {
+  --kiro-embed-max-w: 504px;          /* widest the post gets */
+  --kiro-embed-min-w: 280px;          /* narrowest the post gets on short screens */
+  --kiro-embed-ratio: 1.25;           /* video height / width (4:5) */
+  --kiro-embed-chrome: 288px;         /* post height minus the video, at 340px wide and up */
+  --kiro-embed-chrome-narrow: 323px;  /* same below 340px, where the like bar wraps to 2 rows */
+  --kiro-embed-screen-reserve: 6rem;  /* fixed nav + breathing room kept free on screen */
+  --kiro-embed-fallback-h: 920px;     /* iframe height for browsers without container units */
+  --kiro-embed-w: clamp(
+    var(--kiro-embed-min-w),
+    (100svh - var(--kiro-embed-screen-reserve) - var(--kiro-embed-chrome-narrow)) / var(--kiro-embed-ratio),
+    var(--kiro-embed-max-w)
+  );
+
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 504px);
+  grid-template-columns: minmax(0, 1fr) var(--kiro-embed-w);
   gap: 2.5rem;
   align-items: start;
   margin-top: 3.5rem;
@@ -1119,7 +1136,31 @@ footer#contact {
   background: var(--surface);
 }
 
-.origin-embed iframe { display: block; width: 100%; border: 0; background: #fff; }
+.origin-embed.has-embed { container: kiro-embed / inline-size; }
+
+.origin-embed iframe {
+  display: block;
+  width: 100%;
+  height: var(--kiro-embed-fallback-h);
+  border: 0;
+  background: #fff;
+}
+
+/* Height follows width: 100cqw is the iframe's own width. Rounded to whole pixels so nothing
+   below the post shifts by a fraction of a pixel (the unrounded line is for older browsers). */
+@supports (width: 1cqw) {
+  .origin-embed iframe {
+    height: calc(var(--kiro-embed-chrome) + 100cqw * var(--kiro-embed-ratio));
+    height: round(up, var(--kiro-embed-chrome) + 100cqw * var(--kiro-embed-ratio), 1px);
+  }
+  /* 340px matches --kiro-embed-chrome-narrow (container queries cannot read custom properties). */
+  @container kiro-embed (width < 340px) {
+    .origin-embed iframe {
+      height: calc(var(--kiro-embed-chrome-narrow) + 100cqw * var(--kiro-embed-ratio));
+      height: round(up, var(--kiro-embed-chrome-narrow) + 100cqw * var(--kiro-embed-ratio), 1px);
+    }
+  }
+}
 
 .origin-placeholder {
   display: grid;

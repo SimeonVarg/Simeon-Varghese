@@ -52,7 +52,10 @@
   if (!box) return;
   var postUrl = box.getAttribute('data-post-url') || '';
   var embedSrc = box.getAttribute('data-embed-src') || '';
-  var height = parseInt(box.getAttribute('data-embed-height'), 10) || 720;
+  // LinkedIn's collapsed variant clamps the caption to two lines ("...more"), so the post fits one screen.
+  if (embedSrc && box.getAttribute('data-embed-collapsed') === 'true' && !/[?&]collapsed=/.test(embedSrc)) {
+    embedSrc += (embedSrc.indexOf('?') === -1 ? '?' : '&') + 'collapsed=1';
+  }
   var link = document.getElementById('kiro-post-link');
   var slot = document.getElementById('kiro-embed');
 
@@ -70,7 +73,6 @@
     f.src = embedSrc;
     f.title = "Kiro's LinkedIn post about Austin 3D Explorer";
     f.loading = 'lazy';
-    f.height = String(height);
     f.setAttribute('frameborder', '0');
     f.setAttribute('allowfullscreen', '');
     slot.innerHTML = '';
