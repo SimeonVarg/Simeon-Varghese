@@ -47,6 +47,67 @@
     </header>
 
     <main id="main-content">
+      <section id="featured" aria-labelledby="featured-heading">
+        <div class="featured-inner">
+          <h2 id="featured-heading">Featured Project</h2>
+
+          <div class="featured-media">
+            <video id="featured-video" class="featured-video" autoplay muted loop playsinline preload="metadata" poster="video/austin-3d-explorer.jpg" aria-label="A 20-second tour of Austin 3D Explorer: a 3D flyover of the UT campus, then the apartment finder comparing the real walk to class">
+              <source src="video/austin-3d-explorer.mp4" type="video/mp4" />
+            </video>
+            <script>
+              /* Reduced motion: no autoplay, show the poster and the native controls instead. */
+              (function () {
+                var v = document.getElementById('featured-video');
+                if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                  v.removeAttribute('autoplay'); v.pause(); v.controls = true;
+                  v.setAttribute('data-reduced-motion', '');
+                }
+              })();
+            </script>
+            <button type="button" class="featured-sound" id="featured-sound" aria-pressed="false" aria-label="Turn sound on">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+                <path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>
+                <path class="mute" d="M16 9l5 6M21 9l-5 6"/>
+              </svg>
+              <span class="featured-sound-label">Sound off</span>
+            </button>
+          </div>
+          <p class="featured-credit">Music: original arrangement, built from real instrument recordings. Samples: Salamander Grand Piano by Alexander Holm (CC-BY 3.0); DrumGizmo DRSKit (CC-BY 4.0); VSCO 2 Community Edition (CC0 / CC-BY); FluidR3_GM by Frank Wen (MIT / CC-BY 3.0); Versilian Community Sample Library (CC0); University of Iowa Electronic Music Studios samples.</p>
+
+          <div class="featured-copy">
+            <div class="featured-text">
+              <h3>Austin 3D Explorer</h3>
+              <p>Apartment hunting by the real walk to class, not the listing's "5 min." The whole city, flyable, in a browser tab.</p>
+              <div class="tags">
+                <span class="tag">WebGL</span>
+                <span class="tag">MapLibre GL</span>
+                <span class="tag">Three.js</span>
+                <span class="tag">GLSL</span>
+                <span class="tag">PMTiles</span>
+                <span class="tag">Python</span>
+                <span class="tag">OpenStreetMap</span>
+              </div>
+            </div>
+            <a class="featured-link" href="https://flyover-utx.vercel.app/" target="_blank" rel="noopener noreferrer">Open it <span aria-hidden="true">&#8599;</span><span class="sr-only"> (Austin 3D Explorer, opens in a new tab)</span></a>
+          </div>
+
+          <!-- Kiro's LinkedIn post about this project. To wire it: set data-post-url to the post's link and
+               data-embed-src to the src from LinkedIn's "Embed this post" code. Empty = placeholder. -->
+          <div class="featured-origin" id="kiro-origin" data-post-url="https://www.linkedin.com/posts/kirodotdev_kiro-students-activity-7510772373915275264-S1D4/" data-embed-src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7510772373051224065" data-embed-height="720">
+            <div class="origin-text">
+              <h3>How it started</h3>
+              <p>A few months ago I typed an idea into the Kiro app on my phone: a 3D Austin you can fly through in the browser. Kiro made a short video about it. I'm still building it.</p>
+              <a class="origin-link" id="kiro-post-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Watch Kiro's post on LinkedIn <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
+            </div>
+            <div class="origin-embed" id="kiro-embed">
+              <p class="origin-placeholder">Placeholder: Kiro's LinkedIn post goes here once the post link is added.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="about">
         <div class="about-container">
           <h2>About Me</h2>
@@ -58,7 +119,7 @@
       </section>
 
       <section id="projects">
-        <h2>Featured Projects</h2>
+        <h2>More Projects</h2>
         <div class="carousel-wrapper" aria-label="Project cards carousel">
           <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous project" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
@@ -66,28 +127,6 @@
 
           <div class="carousel-track-outer">
             <div class="projects-grid" id="carousel-track">
-
-              <article class="project-card">
-                <a href="https://flyover-utx.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open Austin 3D Explorer">
-                  <div class="card-image" role="img" aria-label="Austin 3D Explorer screenshot" style="background-image:url('images/austinflyover.jpg');background-size:cover;background-position:center;"></div>
-                  <div class="card-image-overlay">
-                    <span class="card-image-cta">Open Project ↗</span>
-                  </div>
-                </a>
-                <div class="card-body">
-                  <h3>Austin 3D Explorer</h3>
-                  <p>A flyable 3D model of Austin and the UT campus that runs entirely in the browser — no plugin, no game engine, no download. A Python pipeline bakes OpenStreetMap and city open data into vector tiles, which a custom WebGL layer streams and extrudes live as you fly. Seven landmarks, including the UT Tower and the Texas Capitol, are modelled by hand to the metre from photographs.</p>
-                  <div class="tags">
-                    <span class="tag">WebGL</span>
-                    <span class="tag">MapLibre GL</span>
-                    <span class="tag">Three.js</span>
-                    <span class="tag">GLSL</span>
-                    <span class="tag">PMTiles</span>
-                    <span class="tag">Python</span>
-                    <span class="tag">OpenStreetMap</span>
-                  </div>
-                </div>
-              </article>
 
               <article class="project-card">
                 <a href="https://music-vid-pro.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="Open MusicVid Pro">
@@ -272,5 +311,6 @@
     <script src="micro-interactions.js"></script>
     <script src="contact.js"></script>
     <script src="carousel.js"></script>
+    <script src="featured.js"></script>
   </body>
 </html>
