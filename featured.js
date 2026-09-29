@@ -45,3 +45,42 @@
     });
   }, { threshold: 0.35 }).observe(video);
 })();
+
+/* Kiro's LinkedIn post: a plain link always, the embed only once it is wired, and only when it is about to scroll into view. */
+(function () {
+  var box = document.getElementById('kiro-origin');
+  if (!box) return;
+  var postUrl = box.getAttribute('data-post-url') || '';
+  var embedSrc = box.getAttribute('data-embed-src') || '';
+  var height = parseInt(box.getAttribute('data-embed-height'), 10) || 720;
+  var link = document.getElementById('kiro-post-link');
+  var slot = document.getElementById('kiro-embed');
+
+  if (postUrl && link) { link.href = postUrl; link.hidden = false; }
+  if (!embedSrc || !slot) {
+    if (postUrl && slot) slot.hidden = true;        // link only: no empty box
+    return;
+  }
+
+  var done = false;
+  function insert() {
+    if (done) return;
+    done = true;
+    var f = document.createElement('iframe');
+    f.src = embedSrc;
+    f.title = "Kiro's LinkedIn post about Austin 3D Explorer";
+    f.loading = 'lazy';
+    f.height = String(height);
+    f.setAttribute('frameborder', '0');
+    f.setAttribute('allowfullscreen', '');
+    slot.innerHTML = '';
+    slot.appendChild(f);
+    slot.classList.add('has-embed');
+  }
+
+  if (typeof IntersectionObserver === 'undefined') { insert(); return; }
+  var io = new IntersectionObserver(function (entries) {
+    if (entries.some(function (e) { return e.isIntersecting; })) { insert(); io.disconnect(); }
+  }, { rootMargin: '600px 0px' });
+  io.observe(slot);
+})();
