@@ -7,7 +7,7 @@
   // Respect prefers-reduced-motion — skip observer and show everything immediately
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document
-      .querySelectorAll('#about, #projects, .project-card, footer#contact')
+      .querySelectorAll('#featured, #about, #projects, .project-card, footer#contact')
       .forEach(function (el) { el.classList.add('visible'); });
     return;
   }
@@ -26,6 +26,6 @@
   );
 
   document
-    .querySelectorAll('#about, #projects, .project-card, footer#contact')
+    .querySelectorAll('#featured, #about, #projects, .project-card, footer#contact')
     .forEach(function (el) { observer.observe(el); });
 })();
